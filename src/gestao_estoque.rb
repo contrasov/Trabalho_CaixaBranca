@@ -42,12 +42,12 @@ gestao_estoque = GestaoEstoque.new
 
 loop do
   puts "\n"
-  puts "===== Sistema de Gestão de Estoque ====="
-  puts "1. Adicionar item"
-  puts "2. Remover item"
-  puts "3. Verificar estoque de um item"
-  puts "4. Exibir estoque"
-  puts "0. Sair"
+  puts "\e[1m===== Sistema de Gestão de Estoque =====\e[0m" # texto em negrito
+  puts "\e[33m1. Adicionar item\e[0m"
+  puts "\e[33m1. Remover item\e[0m"
+  puts "\e[33m1. Verificar estoque de um item\e[0m"
+  puts "\e[33m1. Exibir estoque\e[0m"
+  puts "\e[31m0. Sair\e[0m"
 
   print "Escolha uma opção: "
   opcao = gets.chomp.to_i
