@@ -24,6 +24,7 @@ class GestaoEstoque
 
   def exibir_estoque
     @estoque.each_with_index do |(item, quantidade), index|
+      next if quantidade == 0
       puts "\n"
       puts "--------------------------------"
       puts "Item #{index + 1}"
