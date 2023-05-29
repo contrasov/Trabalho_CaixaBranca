@@ -1,0 +1,8 @@
+Item: camisa
+Quantidade: 200
+Descrição: camisas oversized
+Tamanhos: gg, m, g, p, branco, preto, azul, rosa
+Cores: branco, preto, azul, rosa
+Preço: 89.0
+Fornecedor: bellator
+----------------------------------------
