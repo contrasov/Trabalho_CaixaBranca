@@ -1,3 +1,5 @@
+#codigo do sistema com uma GUI no terminal, é necessario a gem "tty-prompt"
+
 require "tty-prompt"
 
 class Produto
