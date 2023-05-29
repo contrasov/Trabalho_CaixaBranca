@@ -1,3 +1,5 @@
+require "tty-prompt"
+
 class Produto
   attr_accessor :nome, :quantidade, :preco
 
@@ -11,31 +13,20 @@ end
 class TerminalDeGestaoDeEstoque
   def initialize
     @estoque = []
+    @prompt = TTY::Prompt.new
   end
 
   def adicionar_produto
-    nome = ""
-    while nome.empty?
-      print "\nDigite o nome do Produto: "
-      nome = gets.chomp
-      if nome.empty?
-        print "\e[31mProduto inválido. Digite Novamente: \e[0m"
-      end
-    end
-    print "Digite a quantidade: "
-    quantidade = gets.chomp.to_i
-
-    while quantidade <= 0
-      print "\e[31mQuantidade inválida. Digite novamente: \e[0m"
-      quantidade = gets.chomp.to_i
+    nome = @prompt.ask("\nDigite o nome do Produto:") do |q|
+      q.required(true) # Torna o campo obrigatório
     end
 
-    print "Digite o preço: "
-    preco = gets.chomp.to_f
+    quantidade = @prompt.ask("Digite a quantidade:", convert: :int) do |q|
+      q.validate(/\A[1-9]\d*\z/, "\e[31mQuantidade inválida. Digite novamente:\e[0m") # Validação usando regex
+    end
 
-    while preco <= 0
-      print "\e[31mQuantidade inválida. Digite novamente: \e[0m"
-      preco = gets.chomp.to_i
+    preco = @prompt.ask("Digite o preço:", convert: :float) do |q|
+      q.validate(/\A[1-9]\d*(\.\d+)?\z/, "\e[31mPreço inválido. Digite novamente:\e[0m") # Validação usando regex
     end
 
     produto = Produto.new(nome, quantidade, preco)
@@ -45,14 +36,14 @@ class TerminalDeGestaoDeEstoque
   end
 
   def atualizar_produto
-    print "Digite o nome do produto a ser atualizado: "
-    nome = gets.chomp
+    nome = @prompt.ask("Digite o nome do produto a ser atualizado:")
 
     produto = procurar_produto(nome)
 
     if produto
-      print "Digite a nova quantidade: "
-      quantidade = gets.chomp.to_i
+      quantidade = @prompt.ask("Digite a nova quantidade:", convert: :int) do |q|
+        q.validate(/\A-?\d+\z/, "\e[31mQuantidade inválida. Digite novamente:\e[0m") # Validação usando regex
+      end
 
       nova_quantidade = produto.quantidade + quantidade
 
@@ -81,25 +72,18 @@ class TerminalDeGestaoDeEstoque
   end
 end
 
-# Função para exibir o menu
-def exibir_menu
-  puts "\e[47m\e[30m=== Terminal de Gestão de Estoque ===\e[0m"
-  puts "1. Adicionar Produto"
-  puts "2. Atualizar Produto"
-  puts "3. Visualizar Estoque"
-  puts "\e[31m0. Sair\e[0m"
-  print "Digite a opção desejada: "
-end
-
-# Criação do objeto TerminalDeGestaoDeEstoque
 terminal = TerminalDeGestaoDeEstoque.new
+prompt = TTY::Prompt.new
 
-# Loop principal do programa
 loop do
-  exibir_menu
-  opcao = gets.chomp.to_i
+  escolha = prompt.select("\e[47m\e[30m=== Terminal de Gestão de Estoque ===\e[0m") do |menu|
+    menu.choice "Adicionar Produto", 1
+    menu.choice "Atualizar Produto", 2
+    menu.choice "Visualizar Estoque", 3
+    menu.choice "Sair", 0
+  end
 
-  case opcao
+  case escolha
   when 1
     terminal.adicionar_produto
   when 2
