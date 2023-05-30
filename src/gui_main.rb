@@ -16,6 +16,8 @@ end
 class TerminalDeGestaoDeEstoque
   def initialize
     @estoque = []
+    @quantidade_baixas = 0
+    @total_lucro = 0.0
   end
 
   def adicionar_produto(prompt)
@@ -104,6 +106,8 @@ class TerminalDeGestaoDeEstoque
 
       if quantidade_despacho <= produto.quantidade
         produto.quantidade -= quantidade_despacho
+        @quantidade_baixas += 1
+        @total_lucro += quantidade_despacho * produto.preco
         puts "\n\e[42m\e[30mDespache realizado!\e[0m"
       else
         puts "\n\e[31mA quantidade a ser despachada excede a quantidade atual no estoque.\e[0m"
@@ -129,6 +133,39 @@ class TerminalDeGestaoDeEstoque
     end
   end
 
+  def quantidade_baixas
+    @quantidade_baixas
+  end
+
+  def calcular_porcentagem_lucro
+    return 0.0 if @quantidade_baixas == 0
+
+    lucro = (@total_lucro - (@quantidade_baixas * 10)) * 100.0 / (@quantidade_baixas * 10)
+    lucro.round(2)
+  end
+
+  def gerar_relatorio
+    File.open("relatorio.txt", "w") do |file|
+      file.puts "Relatório de Estoque\n\n"
+
+      file.puts "Produtos em Estoque:"
+      file.puts "====================="
+      @estoque.each do |produto|
+        file.puts "Código: #{produto.codigo}"
+        file.puts "Nome: #{produto.nome}"
+        file.puts "Quantidade: #{produto.quantidade}"
+        file.puts "Preço: R$#{produto.preco}"
+        file.puts "Descrição: #{produto.descricao}"
+        file.puts "---------------------"
+      end
+
+      file.puts "\nQuantidade de Baixas Realizadas: #{quantidade_baixas}"
+      file.puts "Porcentagem de Lucro: #{calcular_porcentagem_lucro}%"
+    end
+
+    puts "\n\e[42m\e[30mRelatório gerado com sucesso! Confira o arquivo relatorio.txt\e[0m"
+  end
+
   private
 
   def procurar_produto(codigo)
@@ -146,6 +183,7 @@ def exibir_menu(prompt)
     menu.choice "Atualizar Produto", 2
     menu.choice "Dar Baixa no Estoque", 3
     menu.choice "Visualizar Estoque", 4
+    menu.choice "Gerar Relatório", 5
     menu.choice "Sair", 0
   end
 end
@@ -221,6 +259,8 @@ while logged_in
     terminal.dar_baixa(prompt)
   when 4
     terminal.visualizar_estoque(prompt)
+  when 5
+    terminal.gerar_relatorio
   when 0
     puts "\nEncerrando sistema..."
     break
