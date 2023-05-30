@@ -193,31 +193,41 @@ end
 def exibir_tela_login(prompt)
   puts "\n\e[47m\e[30m=== Tela de Login ===\e[0m"
 
-  choices = [
-    { name: "Entrar", value: :entrar },
-    { name: "Esqueci senha", value: :esqueci_senha },
-    { name: "Sair", value: :sair },
-  ]
+  login_attempts = 0
 
-  action = prompt.select("Selecione uma opção:", choices)
+  loop do
+    choices = [
+      { name: "Entrar", value: :entrar },
+      { name: "Sair", value: :sair },
+    ]
 
-  case action
-  when :entrar
-    username = prompt.ask("Digite seu nome de usuário:")
-    password = prompt.mask("Digite sua senha:")
+    action = prompt.select("Selecione uma opção:", choices)
 
-    if validar_login(username, password)
-      puts "\n\e[42m\e[30mLogin bem-sucedido!\e[0m"
-      return true
-    else
-      puts "\n\e[31mNome de usuário ou senha inválidos.\e[0m"
+    case action
+    when :entrar
+      username = prompt.ask("Digite seu nome de usuário:") do |q|
+        q.validate(/^\S+$/, "Nome de usuário não pode estar em branco. Digite novamente.")
+      end
+
+      password = prompt.mask("Digite sua senha:") do |q|
+        q.validate(/^\S+$/, "Senha não pode estar em branco. Digite novamente.")
+      end
+
+      if validar_login(username, password)
+        puts "\n\e[42m\e[30mLogin bem-sucedido!\e[0m"
+        return true
+      else
+        puts "\n\e[31mNome de usuário ou senha inválidos.\e[0m"
+        login_attempts += 1
+        if login_attempts == 3
+          puts "\n\e[31mNúmero máximo de tentativas de login excedido. Encerrando o programa...\e[0m"
+          return false
+        end
+      end
+    when :sair
+      puts "\n\e[40mEncerrando sistema...\e[0m"
       return false
     end
-  when :esqueci_senha
-    puts "Você selecionou 'Esqueci senha'. Implemente a lógica para redefinir a senha aqui."
-    return false
-  when :sair
-    puts "\n\e[40mEncerrando sistema...\e[0m"
   end
 end
 
