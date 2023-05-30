@@ -145,6 +145,8 @@ class TerminalDeGestaoDeEstoque
   end
 
   def gerar_relatorio
+    return puts "\n\e[31mNão existem produtos no estoque para gerar relatório.\e[0m" if @estoque.empty?
+
     File.open("relatorio.txt", "w") do |file|
       file.puts "Relatório de Estoque\n\n"
 
