@@ -1,10 +1,47 @@
 # Repositório do Trabalho de Verificação e Validação (V&V) 🔆
-Este repositório contém o trabalho de Verificação e Validação (V&V) realizado como parte da equipe do Alvaro, Pedro Angelo, Judy e Thomaz (sistema de gestão de estoque)
+Este repositório contém o trabalho de Verificação e Validação (V&V) do sistema de Gestão de Estoque do trabalho de Teste de Caixa Branca. 
+## Equipe
 
-O objetivo deste trabalho é garantir a qualidade do sistema, por meio de atividades de verificação e validação.
+- [Alvaro Santos](https://www.github.com/contrasov)
+- Anthonio Judhyson
+- Pedro Angelo
+- Thomaz Jefferson
+## Documentação
 
-# Código-fonte
-O código-fonte do projeto está localizado na pasta src/. Nesta pasta, você encontrará os arquivos e diretórios que compõem a implementação do sistema.
+[Atualizando...](https://link-da-documentação)
+
+
+## Instalação Necessária para Rodar
+
+- Ruby
+No Ubuntu ou Debian:
+```bash
+  sudo apt install ruby
+```
+No CentOS, Fedora ou RHEL:
+```bash
+  sudo dnf install ruby
+```
+No Arch Linux ou Manjaro:
+```bash
+sudo pacman -S ruby
+```
+- A Gem do Ruby "tty-prompt"
+```bash
+gem install tty-prompt ou sudo gem install tty-prompt
+```
+
+- Windows
+```bash
+instala ruby: https://rubyinstaller.org/downloads/
+```
+```bash
+PowerSheel: gem install tty-prompt
+```
+## Feedback
+
+Se você tiver algum feedback, por favor nos deixe saber por meio de agvdsbs@gmail.com
+
 
 
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.linux.org/)
