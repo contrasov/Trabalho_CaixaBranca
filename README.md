@@ -32,6 +32,7 @@ gem install tty-prompt ou sudo gem install tty-prompt
 ```
 
 - Windows
+- Comando para rodar caso dê erro: chcp 65001 (no terminal)
 ```bash
 instala ruby: https://rubyinstaller.org/downloads/
 ```
